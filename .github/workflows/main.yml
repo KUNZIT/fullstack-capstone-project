@@ -1,43 +1,57 @@
 name: 'CI/CD'
+
 on:
   push:
     branches: [master, main]
   pull_request:
     branches: [master, main]
+
 jobs:
   lint_js:
-      name: Lint JavaScript Files
-      runs-on: ubuntu-latest
-      steps:
+    name: Lint JavaScript Files
+    runs-on: ubuntu-latest
+
+    steps:
       - name: Checkout Repository
         uses: actions/checkout@v3
-      - name: Install Node.js
+
+      - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: 14
-      - name: Install JSHint
-        run: npm install jshint --global
-      - name: Run Linter
-        run: |
-          # This command finds all JavaScript files recursively and runs JSHint on them
-          find ./giftlink-backend -name app.js -exec jshint {} +
-          find ./giftlink-backend -name auth.js -exec jshint {} +
-          find ./giftlink-backend -name giftRoutes.js -exec jshint {} +
-          find ./giftlink-backend -name searchRoutes.js -exec jshint {} +
-          echo "Linted all the js files successfully"
+          node-version: 16 # Use a more recent LTS version (16 or 18)
+
+      - name: Install Dependencies (Backend)
+        working-directory: ./giftlink-backend  # Install in backend directory
+        run: npm install
+
+      - name: Run Linter (Backend)
+        working-directory: ./giftlink-backend
+        run: npm run lint # Or the specific lint command if different.  Define this script in backend's package.json
+
   client_build:
-      name: Build client
-      runs-on: ubuntu-latest
-      steps:
+    name: Build client
+    runs-on: ubuntu-latest
+    needs: lint_js # Client build should happen only after linting passes
+
+    steps:
       - name: Checkout Repository
         uses: actions/checkout@v3
-      - name: Install Node.js
+
+      - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: 14
-      - name: Run build
-        run: |
-          cd giftlink-frontend
-          npm install
-          npm run build
-          echo "Client-side build successfully"
+          node-version: 16 # Use a more recent LTS version (16 or 18)
+
+      - name: Install Dependencies (Frontend)
+        working-directory: ./giftlink-frontend
+        run: npm install
+
+      - name: Run Build
+        working-directory: ./giftlink-frontend
+        run: npm run build # Or yarn build if you use yarn
+
+      - name: Upload build artifacts (Optional but recommended)
+        uses: actions/upload-artifact@v3
+        with:
+          name: build # Name of the artifact
+          path: ./giftlink-frontend/build # Path to the build directory
