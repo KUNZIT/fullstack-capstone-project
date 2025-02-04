@@ -1,8 +1,19 @@
 {
   "dependencies": {
     "@types/react": "^19.0.8",
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0",
     "jshint": "^2.13.6",
     "postcss-selector-parser": "^7.0.0",
     "typescript": "^5.7.3"
+  },
+"devDependencies": {
+    "jshint": "^2.13.6",
+    "prettier": "^2.8.0", 
+    "@types/react-dom": "^18.0.0" 
+  },
+  "scripts": {
+    "lint": "jshint ."
+    
   }
 }
