@@ -1,0 +1,35 @@
+name: 'CI/CD'
+
+on:
+  push:
+    branches: [master, main]
+  pull_request:
+    branches: [master, main]
+
+jobs:
+  client_build:
+    name: Build client
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16 # Use a more recent LTS version (16 or 18)
+
+      - name: Install Dependencies (Frontend)
+        working-directory: ./giftlink-frontend
+        run: npm install
+
+      - name: Run Build
+        working-directory: ./giftlink-frontend
+        run: npm run build # Or yarn build if you use yarn
+
+      - name: Upload build artifacts (Optional but recommended)
+        uses: actions/upload-artifact@v3
+        with:
+          name: build # Name of the artifact
+          path: ./giftlink-frontend/build # Path to the build directory
