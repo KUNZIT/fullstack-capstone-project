@@ -29,7 +29,7 @@ jobs:
         run: npm run build # Or yarn build if you use yarn
 
       - name: Upload build artifacts (Optional but recommended)
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: build # Name of the artifact
           path: ./giftlink-frontend/build # Path to the build directory
