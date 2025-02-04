@@ -8,7 +8,7 @@ on:
 
 jobs:
   lint_js:
-    name: Lint JavaScript Files
+    name: Lint JavaScript Files (Backend)
     runs-on: ubuntu-latest
 
     steps:
