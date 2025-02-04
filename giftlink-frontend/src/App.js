@@ -10,7 +10,11 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
 import Navbar from './components/Navbar/Navbar';
 function App() {
-  
+  const navigate = useNavigate();
+
+  const goToHome = () => {
+    navigate('/'); // Or navigate('/app') if that's your home route
+  };
   return (
         <>
         <Navbar/>
@@ -22,6 +26,7 @@ function App() {
           <Route path="/app/product/:productId" element={<DetailsPage/>} />
           <Route path="/app/search" element={<SearchPage/>} />
         </Routes>
+        <button onClick={goToHome}>Go to Home</button>
         </>
   );
 }
